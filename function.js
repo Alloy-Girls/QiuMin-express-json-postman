@@ -93,7 +93,7 @@ function insertData(req, res) {
             res.send("ERROR:" + err);
         }
         else if (errobj.err) {
-            res.status(400).send(data);
+            res.status(400).send("其他数据插入成功 "+data);
         }
         else {
             res.status(200).send(data);
@@ -111,7 +111,7 @@ function deleteData(req, res) {
         }
     }
     if (i === Data.length) {
-        res.status(400).end();
+        res.status(400).send("删除成功!");
     }
 }
 
@@ -124,11 +124,6 @@ function findOne(req, res) {
         }
 
     }
-    // Data.forEach(function (elementObj) {
-    //     if (elementObj.id === parseInt(req.params.id)) {
-    //         res.send(elementObj);
-    //     }
-    // });
     res.status(404).end();
 }
 

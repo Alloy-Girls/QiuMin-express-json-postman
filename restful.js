@@ -6,6 +6,7 @@ var router = express();
 router.listen(3000);
 router.use(bodyParser.json());//解析前端获得的字符串
 var operation = require("./function.js");
+// var maxId = [];
 
 var data = [
     {
