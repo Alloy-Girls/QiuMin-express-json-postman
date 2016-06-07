@@ -9,7 +9,7 @@ function addObject(primaryData, newData) {
 function addId(Array) {
     var intId = 1;
     for (var i = 0; i < Array.length; i++) {
-        if (!Array[i].id) {////////////记住这个这个坑, !0 也为 真啊,所以id值为从0开始,我这样用就是一个坑
+        if (!Array[i].id) {
             if (i == 0) {
                 Array[i].id = intId;
                 maxId = Array[i].id;
@@ -22,9 +22,6 @@ function addId(Array) {
     }
 }
 
-//输入有多余的属性 -> 只取需要的属性
-//输入缺失的属性 -> 返回 401
-//输入数据类型错误 -> 返回401
 
 function errSolve(input) {
     var endInput = [];
@@ -50,42 +47,10 @@ function errSolve(input) {
     return errobj;
 }
 
-// function format(obj) {
-//     var data = {};
-//     data.barcode = typeof(obj.barcode);
-//     data.name = typeof(obj.name);
-//     data.unit = typeof(obj.unit);
-//     data.price = typeof(obj.price);
-//     console.log(data);
-//     return data;
-// }
-//
-// function correctType(typeArrData) {
-//     typeArrData.forEach(function (elementObj) {
-//         elementObj = format(elementObj);
-//         if (elementObj.barcode != 'string') {
-//             elementObj.barcode = String(elementObj.barcode);
-//         }
-//         if (elementObj.name != "string") {
-//             elementObj.name = String(elementObj.name);
-//         }
-//         if (elementObj.unit != "string") {
-//             elementObj.unit = String(elementObj.unit);
-//         }
-//         if (elementObj.price != "number") {
-//             // elementObj.price = Number('elementObj.price');
-//             elementObj.price = (elementObj.price).valueOf();
-//             // elementObj.price = parseInt('elementObj.price');
-//         }
-//     });
-//     console.log(typeArrData);
-// }
-
 function insertData(req, res) {
     var jsonData = fs.readFileSync("./data.json");
     data = JSON.parse(jsonData);
     var errobj = errSolve(req.body);
-    // correctType(errobj.input);
     addObject(data, errobj.input);
     addId(data);
     fs.writeFile("./data.json", JSON.stringify(data), function (err) {
@@ -93,7 +58,7 @@ function insertData(req, res) {
             res.send("ERROR:" + err);
         }
         else if (errobj.err) {
-            res.status(400).send("其他数据插入成功 "+data);
+            res.status(400).send("其他数据插入成功 " + data);
         }
         else {
             res.status(200).send(data);
@@ -149,27 +114,9 @@ function putError(input) {
 
 }
 
-function correctPutType(inputObj) {
-    if (typeof(inputObj.barcode) != "string") {
-        inputObj.barcode = String(inputObj.barcode);
-    }
-    if (typeof(inputObj.name) != "string") {
-        inputObj.name = String(inputObj.name);
-    }
-    if (typeof(inputObj.unit) != "string") {
-        inputObj.unit = String(inputObj.unit);
-    }
-    if (typeof(inputObj).price != "number") {
-        inputObj.price = Number(inputObj.price);
-    }
-    return inputObj;
-}
-
-
 function updateData(req, res) {
     var Data = JSON.parse(fs.readFileSync("./data.json"));
     var inputObj = putError(req.body);
-    // inputObj.obj = correctPutType(inputObj.obj);
     if (inputObj.obj) {
         for (var i = 0; i < Data.length; i++) {
             if (Data[i].id === parseInt(req.params.id)) {
@@ -188,7 +135,6 @@ function updateData(req, res) {
         res.status(401).send(inputObj.err);
     }
 }
-
 
 exports.addId = addId;
 exports.insertData = insertData;
