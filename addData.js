@@ -1,22 +1,5 @@
 var fs = require("fs");
-maxId = 0;
-function addId(Array) {
-    var intId = 1;
-    for (var i = 0; i < Array.length; i++) {
-        if (!Array[i].id) {
-            if (i == 0) {
-                Array[i].id = intId;
-                maxId = Array[i].id;
-            }
-            else {
-                maxId += 1;
-                Array[i].id = maxId;
-            }
-        }
-    }
-}
-
-
+var maxId = 0;
 function getAttributes(input) {
     var correctInput = {};
     if (input.barcode && input.name && input.unit && input.price) {
@@ -28,17 +11,7 @@ function getAttributes(input) {
     return correctInput;
 }
 
-function judgeFormat(input) {
-    if (typeof(input) != "object") {
-        return;
-    }
-    return input;
-}
-
 function judgeType(input) {
-    if (!judgeFormat(input)) {
-        return;
-    }
     var attributes = getAttributes(input);
     if (attributes) {
         if (typeof(input.barcode) != "string" || typeof(input.name) != "string"
@@ -50,35 +23,27 @@ function judgeType(input) {
     return attributes;
 }
 
-function sortData(data) {
-    for (var i = 0; i < data.length; i++) {
-        var dataObj = {};
-        dataObj.id = data[i].id;
-        dataObj.barcode = data[i].barcode;
-        dataObj.name = data[i].name;
-        dataObj.unit = data[i].unit;
-        dataObj.price = data[i].price;
-        data[i] = dataObj;
-    }
+function addId(input) {
+        var Obj = {};
+        Obj.id = ++maxId;
+        Obj.barcode = input.barcode;
+        Obj.name = input.name;
+        Obj.unit = input.unit;
+        Obj.price = input.price;
+       return Obj;
 }
 
 function insertData(req, res) {
     var data = JSON.parse(fs.readFileSync("./data.json"));
     var correctInput;
-    // console.log(req.body);
-    if (req.body != "{}") {
+        console.log(req.body);
         correctInput = judgeType(req.body);
         if (!correctInput) {
             res.status(400).end();
             return;
         }
-    }
-    else{
-        correctInput = req.body;
-    }
+    correctInput =  addId(correctInput);
     data.push(correctInput);
-    addId(data);
-    sortData(data);
     fs.writeFile("./data.json", JSON.stringify(data), function (err) {
         if (err) {
             res.send("ERROR:" + err);

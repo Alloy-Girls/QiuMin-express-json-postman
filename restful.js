@@ -1,8 +1,9 @@
 var express = require("express");
 var fs = require("fs");
 var bodyParser = require("body-parser");
-var multer = require("multer");
+// var multer = require("multer");
 var router = express();
+
 router.listen(3000);
 router.use(bodyParser.json());//解析前端获得的字符串
 // var operation = require("./function.js");

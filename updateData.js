@@ -1,21 +1,28 @@
 var fs = require("fs");
 var judgeType = require("./addData");
+
+function copyData(element) {
+    var updateInput = {};
+    var temp = element.id;
+    updateInput.id = temp;
+    updateInput.barcode = element.barcode;
+    updateInput.name = element.name;
+    updateInput.unit = element.unit;
+    updateInput.price = element.price;
+    return updateInput;
+}
+
 function updateData(req, res) {
     var data = JSON.parse(fs.readFileSync("./data.json"));
     var correctInput = judgeType.judgeType(req.body);
     if (!correctInput) {
         res.status(400).end();
-        return;
+        return false;
     }
     else {
-        for (var i in data) {
+        for (var i = 0 in data) {
             if (data[i].id === parseInt(req.params.id)) {
-                var temp = data[i].id;
-                data[i].id = temp;
-                data[i].barcode = correctInput.barcode;
-                data[i].name = correctInput.name;
-                data[i].unit = correctInput.unit;
-                data[i].price = correctInput.price;
+                data[i] = copyData(data[i]);
                 fs.writeFileSync("./data.json", JSON.stringify(data));
                 res.status(200).send(data[i]);
             }
