@@ -1,11 +1,5 @@
 var fs = require("fs");
-var maxId = 0;
-function addObject(primaryData, newData) {
-    newData.forEach(function (object) {
-        primaryData.push(object);
-    })
-}
-
+maxId = 0;
 function addId(Array) {
     var intId = 1;
     for (var i = 0; i < Array.length; i++) {
@@ -23,45 +17,75 @@ function addId(Array) {
 }
 
 
-function errSolve(input) {
-    var endInput = [];
-    var temp = [];
-    var errobj = {};
-    for (var i = 0; i < input.length; i++) {
-        if (input[i].barcode && input[i].name && input[i].unit && input[i].price) {
-            var obj = {};
-            obj.barcode = String(input[i].barcode);
-            obj.name = String(input[i].name);
-            obj.unit = String(input[i].unit);
-            obj.price = Number(input[i].price);
-            endInput.push(obj);
-        }
-        else {
-            temp.push(i + ",");
-        }
+function getAttributes(input) {
+    var correctInput = {};
+    if (input.barcode && input.name && input.unit && input.price) {
+        correctInput.barcode = input.barcode;
+        correctInput.name = input.name;
+        correctInput.unit = input.unit;
+        correctInput.price = input.price;
     }
-    if (temp[0]) {
-        errobj.err = "401" + "(详情:第" + temp + "条数据缺失属性或者数据类型错误!)";
-    }
-    errobj.input = endInput;
-    return errobj;
+    return correctInput;
 }
 
+function judgeFormat(input) {
+    if (typeof(input) != "object") {
+        return;
+    }
+    return input;
+}
+
+function judgeType(input) {
+    if (!judgeFormat(input)) {
+        return;
+    }
+    var attributes = getAttributes(input);
+    if (attributes) {
+        if (typeof(input.barcode) != "string" || typeof(input.name) != "string"
+            || typeof(input.unit) != "string" || typeof(input.price) != "number") {
+            return;
+        }
+    }
+    return attributes;
+}
+
+function sortData(data) {
+    for (var i = 0; i < data.length; i++) {
+        var dataObj = {};
+        dataObj.id = data[i].id;
+        dataObj.barcode = data[i].barcode;
+        dataObj.name = data[i].name;
+        dataObj.unit = data[i].unit;
+        dataObj.price = data[i].price;
+        data[i] = dataObj;
+    }
+}
+
+
 function insertData(req, res) {
-    var jsonData = fs.readFileSync("./data.json");
-    data = JSON.parse(jsonData);
-    var errobj = errSolve(req.body);
-    addObject(data, errobj.input);
+    var data = JSON.parse(fs.readFileSync("./data.json"));
+    var correctInput;
+    console.log(req.body);
+    if (req.body != "{}") {
+         correctInput = judgeType(req.body);
+        if (!correctInput) {
+            res.status(400).end();
+            return;
+        }
+    }
+    else{
+        correctInput = req.body;
+    }
+    data.push(correctInput);
     addId(data);
+    sortData(data);
     fs.writeFile("./data.json", JSON.stringify(data), function (err) {
         if (err) {
             res.send("ERROR:" + err);
-        }
-        else if (errobj.err) {
-            res.status(400).send("其他数据插入成功 " + data);
+            console.log(err);
         }
         else {
-            res.status(200).send(data);
+            res.status(200).send(data[data.length - 1]);
         }
     });
 }
@@ -72,11 +96,11 @@ function deleteData(req, res) {
         if (Data[i].id === parseInt(req.params.id)) {
             Data.splice(i, 1);
             fs.writeFileSync("./data.json", JSON.stringify(Data));
-            res.status(200).send("删除成功!");
+            res.status(204).end();
         }
     }
     if (i === Data.length) {
-        res.status(400).send("删除成功!");
+        res.status(400).end();
     }
 }
 
@@ -84,7 +108,7 @@ function findOne(req, res) {
     var Data = JSON.parse(fs.readFileSync('data.json'));
     for (var i in Data) {
         if (parseInt(req.params.id) === Data[i].id) {
-            res.send(Data[i]);
+            res.status(200).send(Data[i]);
             return;
         }
 
@@ -97,42 +121,25 @@ function findAll(req, res) {
     res.send(Data);
 }
 
-function putError(input) {
-    var inputObj = {};
-    if (input.barcode && input.name && input.unit && input.price) {
-        var obj = {};
-        obj.barcode = String(input.barcode);
-        obj.name = String(input.name);
-        obj.unit = String(input.unit);
-        obj.price = Number(input.price);
-        inputObj.obj = obj;
-    }
-    if (!inputObj.obj) {
-        inputObj.err = " sorry,你输入的属性不足或者数据类型不正确!";
-    }
-    return inputObj;
-
-}
-
 function updateData(req, res) {
-    var Data = JSON.parse(fs.readFileSync("./data.json"));
-    var inputObj = putError(req.body);
-    if (inputObj.obj) {
-        for (var i = 0; i < Data.length; i++) {
-            if (Data[i].id === parseInt(req.params.id)) {
-                var temp = Data[i].id;
-                Data[i] = inputObj.obj;
-                Data[i].id = temp;
-                fs.writeFileSync("./data.json", JSON.stringify(Data));
-                res.send(Data[i]);
-            }
-        }
-        if (i === Data.length) {
-            res.status(404).end();
-        }
+    var data = JSON.parse(fs.readFileSync("./data.json"));
+    var correctInput = judgeType(req.body);
+    if (!correctInput) {
+        res.status(400).end();
     }
     else {
-        res.status(401).send(inputObj.err);
+        for (var i in data) {
+            if (data[i].id === parseInt(req.params.id)) {
+                var temp = data[i].id;
+                data[i] = correctInput;
+                data[i].id = temp;
+                fs.writeFileSync("./data.json", JSON.stringify(data));
+                res.status(200).send(data[i]);
+            }
+        }
+        if (i === data.length) {
+            res.status(404).end();
+        }
     }
 }
 

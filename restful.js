@@ -22,9 +22,9 @@ fs.exists("./data.json", function (exists) {
 
 router.post('/products', operation.insertData);
 router.delete('/products/:id', operation.deleteData);
-router.get('/products/:id', operation.findOne);
+router.get('/product/:id', operation.findOne);
 router.get('/products', operation.findAll);
-router.put('/products/:id', operation.updateData);
+router.put('/product/:id', operation.updateData);
 
 
 
