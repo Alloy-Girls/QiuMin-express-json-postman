@@ -46,6 +46,7 @@ function judgeType(input) {
             return;
         }
     }
+    console.log(attributes);
     return attributes;
 }
 
@@ -61,13 +62,12 @@ function sortData(data) {
     }
 }
 
-
 function insertData(req, res) {
     var data = JSON.parse(fs.readFileSync("./data.json"));
     var correctInput;
-    console.log(req.body);
+    // console.log(req.body);
     if (req.body != "{}") {
-         correctInput = judgeType(req.body);
+        correctInput = judgeType(req.body);
         if (!correctInput) {
             res.status(400).end();
             return;
@@ -90,62 +90,5 @@ function insertData(req, res) {
     });
 }
 
-function deleteData(req, res) {
-    var Data = JSON.parse(fs.readFileSync('./data.json'));
-    for (var i = 0; i < Data.length; i++) {
-        if (Data[i].id === parseInt(req.params.id)) {
-            Data.splice(i, 1);
-            fs.writeFileSync("./data.json", JSON.stringify(Data));
-            res.status(204).end();
-        }
-    }
-    if (i === Data.length) {
-        res.status(400).end();
-    }
-}
-
-function findOne(req, res) {
-    var Data = JSON.parse(fs.readFileSync('data.json'));
-    for (var i in Data) {
-        if (parseInt(req.params.id) === Data[i].id) {
-            res.status(200).send(Data[i]);
-            return;
-        }
-
-    }
-    res.status(404).end();
-}
-
-function findAll(req, res) {
-    var Data = JSON.parse(fs.readFileSync("./data.json"));
-    res.send(Data);
-}
-
-function updateData(req, res) {
-    var data = JSON.parse(fs.readFileSync("./data.json"));
-    var correctInput = judgeType(req.body);
-    if (!correctInput) {
-        res.status(400).end();
-    }
-    else {
-        for (var i in data) {
-            if (data[i].id === parseInt(req.params.id)) {
-                var temp = data[i].id;
-                data[i] = correctInput;
-                data[i].id = temp;
-                fs.writeFileSync("./data.json", JSON.stringify(data));
-                res.status(200).send(data[i]);
-            }
-        }
-        if (i === data.length) {
-            res.status(404).end();
-        }
-    }
-}
-
-exports.addId = addId;
+exports.judgeType = judgeType;
 exports.insertData = insertData;
-exports.deleteData = deleteData;
-exports.findOne = findOne;
-exports.findAll = findAll;
-exports.updateData = updateData;

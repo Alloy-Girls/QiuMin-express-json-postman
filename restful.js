@@ -5,7 +5,7 @@ var multer = require("multer");
 var router = express();
 router.listen(3000);
 router.use(bodyParser.json());//解析前端获得的字符串
-var operation = require("./function.js");
+// var operation = require("./function.js");
 fs.exists("./data.json", function (exists) {
     if (!exists) {
         fs.open("./data.json", "a", function (err, fd) {
@@ -20,11 +20,11 @@ fs.exists("./data.json", function (exists) {
     }
 });
 
-router.post('/products', operation.insertData);
-router.delete('/products/:id', operation.deleteData);
-router.get('/product/:id', operation.findOne);
-router.get('/products', operation.findAll);
-router.put('/product/:id', operation.updateData);
+router.post('/products', require("./addData").insertData);
+router.delete('/products/:id', require("./deleteData"));
+router.get('/products/:id', require("./findData").findOne);
+router.get('/products', require("./findData").findAll);
+router.put('/products/:id', require("./updateData"));
 
 
 
