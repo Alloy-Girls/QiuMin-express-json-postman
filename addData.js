@@ -2,26 +2,21 @@ var fs = require("fs");
 var maxId = 0;
 function getAttributes(input) {
     var correctInput = {};
-    if (input.barcode && input.name && input.unit && input.price) {
-        correctInput.id = ++maxId;
-        correctInput.barcode = input.barcode;
-        correctInput.name = input.name;
-        correctInput.unit = input.unit;
-        correctInput.price = input.price;
-    }
+    correctInput.id = ++maxId;
+    correctInput.barcode = input.barcode;
+    correctInput.name = input.name;
+    correctInput.unit = input.unit;
+    correctInput.price = input.price;
     return correctInput;
 }
 
 function judgeType(input) {
-    var attributes = getAttributes(input);
-    if (attributes) {
-        if (typeof(input.barcode) != "string" || typeof(input.name) != "string"
-            || typeof(input.unit) != "string" || typeof(input.price) != "number") {
-            maxId--;
-            return;
+        if (typeof(input.barcode) === "string" && typeof(input.name) === "string" &&
+            typeof(input.unit) === "string" && typeof(input.price) === "number") {
+            var correctInput = getAttributes(input);
+            return correctInput;
         }
-    }
-    return attributes;
+    return false;
 }
 
 function insertData(req, res) {

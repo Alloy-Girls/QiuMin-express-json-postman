@@ -1,7 +1,7 @@
 var express = require("express");
 var fs = require("fs");
 var bodyParser = require("body-parser");
-// var multer = require("multer");
+var multer = require("multer");
 var router = express();
 
 router.listen(3000);

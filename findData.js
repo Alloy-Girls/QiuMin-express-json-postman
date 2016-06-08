@@ -1,10 +1,11 @@
 var fs = require("fs");
 function findOne(req, res) {
     var Data = JSON.parse(fs.readFileSync('data.json'));
-    for (var i in Data) {
+    for (var i = 0 in Data) {
         if (parseInt(req.params.id) === Data[i].id) {
-            res.status(204).send(Data[i]);
-            return;
+            res.status(200).send(Data[i]);
+            console.log(Data[i]);
+            return ;
         }
 
     }
@@ -18,5 +19,5 @@ function findAll(req, res) {
 
 
 exports.findAll = findAll;
-exports.findOne =findOne;
+exports.findOne = findOne;
 
