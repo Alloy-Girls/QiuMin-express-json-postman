@@ -1,0 +1,23 @@
+{
+  "name": "restful_webapi",
+  "version": "4.13.1",
+  "description": "body-parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alloy-girls/QiuMin-express-json-postman.git"
+  },
+  "keywords": [
+    "express",
+    "node"
+  ],
+  "author": "QiuMin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alloy-girls/QiuMin-express-json-postman/issues"
+  },
+  "homepage": "https://github.com/alloy-girls/QiuMin-express-json-postman#readme"
+}
