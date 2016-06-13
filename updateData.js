@@ -25,11 +25,10 @@ function updateData(req, res) {
                 data[i] = copyData(data[i]);
                 fs.writeFileSync("./data.json", JSON.stringify(data));
                 res.status(200).send(data[i]);
+                return true;
             }
         }
-        if (i === data.length) {
             res.status(404).end();
-        }
     }
 }
 
