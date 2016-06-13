@@ -17,7 +17,6 @@ function updateData(req, res) {
     var correctInput = judgeType.judgeType(req.body);
     if (!correctInput) {
         res.status(400).end();
-        return false;
     }
     else {
         for (var i = 0 in data) {
