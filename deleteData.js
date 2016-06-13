@@ -6,11 +6,10 @@ function deleteData(req, res) {
             Data.splice(i, 1);
             fs.writeFileSync("./data.json", JSON.stringify(Data));
             res.status(204).end();
+            rerurn true;
         }
     }
-    if (i === Data.length) {
         res.status(404).end();
-    }
 }
 
 module.exports = deleteData;
