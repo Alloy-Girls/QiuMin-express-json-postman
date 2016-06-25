@@ -1,10 +1,9 @@
 var express = require("express");
-var fs = require("fs");
-var bodyParser = require("body-parser");
 var app = express();
-var fileOperate = require("./fileOperate");
+var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
+var fileOperate = require("./fileOperate");
 fileOperate.createFile();
 
 app.post('/products', require("./addData").insertData);
