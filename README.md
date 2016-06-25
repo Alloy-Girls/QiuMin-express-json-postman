@@ -5,17 +5,17 @@
    
         npm install -g body-parser
 
-##use nodemon to auto-reload
+##use supervisor to auto-reload
 
        npm install -g supervisor
 
 
 ##run code
 
-       node index.js
+        node index.js
 
 or
 
-    supervisor index.js
+     supervisor index.js
 
 
