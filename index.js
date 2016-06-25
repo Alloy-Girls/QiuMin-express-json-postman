@@ -7,7 +7,7 @@ var fileOperate = require("./fileOperate");
 fileOperate.createFile();
 
 app.post('/products', require("./addData").insertData);
-app.delete('/product/:id', require("./deleteData"));
+app.delete('/products/:id', require("./deleteData"));
 app.get('/products/:id', require("./findData").findOne);
 app.get('/products', require("./findData").findAll);
 app.put('/products/:id', require("./updateData"));
