@@ -1,4 +1,4 @@
-#*How to write an express application*
+#*How to use an express application*
 
 ##install dependencies
         npm install -g express
@@ -7,7 +7,7 @@
 
 ##use supervisor to auto-reload
 
-       npm install -g supervisor
+        npm install -g supervisor
 
 
 ##run code
@@ -16,6 +16,6 @@
 
 or
 
-     supervisor index.js
+        supervisor index.js
 
 
