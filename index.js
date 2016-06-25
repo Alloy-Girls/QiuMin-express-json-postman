@@ -13,12 +13,6 @@ app.get('/products/:id', require("./findData").findOne);
 app.get('/products', require("./findData").findAll);
 app.put('/products/:id', require("./updateData"));
 
-// var server = app.listen(3000, function () {
-//     console.log('Example app listening at http://%s:%s',
-//         server.address().address,
-//         server.address().port);
-// });
-
 var server = app.listen(3000, function () {
     var port = server.address().port;
     console.log("listen on " + port);
