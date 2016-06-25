@@ -1,14 +1,14 @@
-######*How to write an express application*
+#*How to write an express application*
 
-####install dependencies
+##install dependencies
    npm install -g express
    npm install -g body-parser
 
-#####use nodemon to auto-reload
+##use nodemon to auto-reload
 npm install -g supervisor
 
 
-#####run code
+##run code
 node index.js
 or
 supervisor index.js
