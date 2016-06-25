@@ -1,10 +1,11 @@
-var fs = require("fs");
-function deleteData(req, res) {
-    var Data = JSON.parse(fs.readFileSync('./data.json'));
-    for (var i = 0; i < Data.length; i++) {
-        if (Data[i].id === parseInt(req.params.id)) {
-            Data.splice(i, 1);
-            fs.writeFileSync("./data.json", JSON.stringify(Data));
+var fileOperate = require("./fileOperate");
+
+function deleteData(req, res, next) {
+    var data = fileOperate.readFile();
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].id === parseInt(req.params.id)) {
+            data.splice(i, 1);
+            fileOperate.writeFile(data, next);
             res.status(204).end();
             return true;
         }

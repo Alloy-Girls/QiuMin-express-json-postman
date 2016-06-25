@@ -1,4 +1,4 @@
-var fs = require("fs");
+var fileOperate = require("./fileOperate");
 var judgeType = require("./addData");
 
 function copyData(element, id) {
@@ -11,18 +11,17 @@ function copyData(element, id) {
     return updateInput;
 }
 
-function updateData(req, res) {
-    var data = JSON.parse(fs.readFileSync("./data.json"));
+function updateData(req, res, next) {
+    var data = fileOperate.readFile();
     var correctInput = judgeType.judgeType(req.body);
     if (!correctInput) {
         res.status(400).end();
     }
     else {
         for (var i = 0 in data) {
-            console.log(req.params.id);
             if (data[i].id === parseInt(req.params.id)) {
-                data[i] = copyData(req.body, req.params.id);
-                fs.writeFileSync("./data.json", JSON.stringify(data));
+                data[i] = copyData(req.body, parseInt(req.params.id));
+                fileOperate.writeFile(data, next);
                 res.status(200).send(data[i]);
                 return true;
             }
