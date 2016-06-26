@@ -21,9 +21,11 @@
 or
 
         supervisor index.js  (修改代码后,自动重启服务器)
-
+`__`
 or
 
         nodemon -e js  index.js (修改代码后,自动重启服务器)
+
+
 
 
