@@ -20,10 +20,10 @@
 
 or
 
-        supervisor index.js  (自动重启服务器)
+        supervisor index.js  (修改代码后,自动重启服务器)
 
 or
 
-        nodemon -e js  index.js (自动重启服务器)
+        nodemon -e js  index.js (修改代码后,自动重启服务器)
 
 
