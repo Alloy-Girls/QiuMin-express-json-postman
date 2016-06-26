@@ -1,16 +1,10 @@
 var express = require("express");
 var app = express();
-var bodyParser = require("body-parser");
-app.use(bodyParser.json());
 
-var fileOperate = require("./fileOperate");
+var fileOperate = require("./file-operate");
 fileOperate.createFile();
 
-app.post('/products', require("./addData").insertData);
-app.delete('/products/:id', require("./deleteData"));
-app.get('/products/:id', require("./findData").findOne);
-app.get('/products', require("./findData").findAll);
-app.put('/products/:id', require("./updateData"));
+app.use('/products',require('./products-router'));
 
 var server = app.listen(3000, function () {
     var port = server.address().port;

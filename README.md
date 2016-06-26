@@ -9,6 +9,10 @@
 
         npm install -g supervisor
 
+     or
+
+        npm install -g nodemon
+
 
 ##run code
 
@@ -16,6 +20,9 @@
 
 or
 
-        supervisor index.js
+        supervisor index.js  (自动重启服务器)
+
+or
+        nodemon -e js  index.js
 
 

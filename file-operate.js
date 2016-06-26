@@ -1,14 +1,14 @@
 var fs = require("fs");
-
+var FILE_NAME = "data.json";
 function createFile() {
-    fs.exists("./data.json", function (exists) {
+    fs.exists(FILE_NAME, function (exists) {
         if (!exists) {
-            fs.open("./data.json", "a", function (err, fd) {
+            fs.open(FILE_NAME, "a", function (err, fd) {
                 if (err) {
                     console.log("file not exist,create failing!");
                 }
                 else {
-                    fs.writeFileSync("./data.json", JSON.stringify([]));
+                    fs.writeFileSync(FILE_NAME, JSON.stringify([]));
                 }
             });
         }
@@ -16,14 +16,14 @@ function createFile() {
 }
 
 function writeFile(data, next) {
-    fs.writeFile("./data.json", JSON.stringify(data), function (err) {
+    fs.writeFile(FILE_NAME, JSON.stringify(data), function (err) {
         if (err)
             return next(err);
     });
 }
 
 function readFile() {
-    var data = JSON.parse(fs.readFileSync('data.json'));
+    var data = JSON.parse(fs.readFileSync(FILE_NAME));
      return data;
 }
 
