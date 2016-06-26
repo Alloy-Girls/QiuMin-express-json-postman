@@ -23,6 +23,7 @@ or
         supervisor index.js  (自动重启服务器)
 
 or
-        nodemon -e js  index.js
+
+        nodemon -e js  index.js (自动重启服务器)
 
 
