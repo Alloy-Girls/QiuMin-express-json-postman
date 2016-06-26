@@ -5,7 +5,7 @@
    
         npm install -g body-parser
 
-##use supervisor to auto-reload
+##use supervisor / nodemon  to auto-reload
 
         npm install -g supervisor
 
